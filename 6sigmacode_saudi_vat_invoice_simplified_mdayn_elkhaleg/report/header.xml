@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="header">
+        <div t-attf-class="header">
+            <div class="o_clean_header">
+                 <div class="row">
+                     
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

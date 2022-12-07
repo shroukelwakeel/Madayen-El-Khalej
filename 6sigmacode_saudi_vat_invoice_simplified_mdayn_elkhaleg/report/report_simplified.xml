@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="main_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="6sigmacode_saudi_vat_invoice_simplified_mdayn_elkhaleg.report_simplified_vat_invoice_document_one"
+                   t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+    <template id="report_simplified_vat_invoice_document_one">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+        <div class="page">
+            <!--Calling our customize report header template-->
+            <!--            <div>-->
+            <!--                <t t-call="6sigmacode_saudi_vat_invoice_simplified_mdayn_elkhaleg.header"/>-->
+            <!--            </div>-->
+            <div class="row">
+                <div style="text-align:center;color:#6f7576; margin-bottom:40px">
+                    <h3>فاتورة ضريبيـــة</h3>
+                </div>
+                <table style="width:100%;margin-bottom:40px;">
+                    <tr>
+                        <td style="text-align:right;padding:8px;">
+                            <t t-esc="doc.name"/>
+                        </td>
+                        <td style="text-align:right;width:40%;font-size:17px;padding:8px;">رقم الفاتورة</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;padding:8px;">
+                            <t t-esc="doc.invoice_date"/>
+                        </td>
+                        <td style="text-align:right;width:40%;font-size:17px;padding:8px;">تاريخ إصدار الفاتورة</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;padding:8px;">
+                            <t t-esc="doc.partner_id.name"/>
+                        </td>
+                        <td style="text-align:right;width:40%;font-size:17px;padding:8px;">اسم العميـــل</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;padding:8px;">
+                            <t t-esc="doc.partner_id.vat"/>
+                        </td>
+                        <td style="text-align:right;width:40%;font-size:17px;padding:8px;">الرقم الضريـبـي للعميــل</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;padding:8px;">
+                            <t t-esc="doc.note"/>
+                        </td>
+                        <td style="text-align:right;width:40%;font-size:17px;padding:8px;">ملاحظــات</td>
+                    </tr>
+                </table>
+                <table style="width:100%;border-collapse: collapse;">
+                    <tr>
+                        <th style="background-color:#434343;color:#fff;text-align:right;padding:8px;">اجمـالـى السعر
+                        </th>
+                        <th style="background-color:#434343;color:#fff;text-align:right;padding:8px;">% الخصم</th>
+                        <th style="background-color:#434343;color:#fff;text-align:right;padding:8px;">% الضريبة</th>
+                        <th style="background-color:#434343; color:#fff;text-align:right;padding:8px;">سعر الوحدة</th>
+                        <th style="background-color:#434343; color:#fff;text-align:right;padding:8px;">الوحدة</th>
+                        <th style="background-color:#434343; color:#fff;text-align:right;padding:8px;">عدد</th>
+                        <th style="background-color:#434343; color:#fff;text-align:right;padding:8px;">البيـــــان</th>
+                    </tr>
+                    <tr t-foreach="doc.invoice_line_ids" t-as="line">
+                        <td style="text-align:right;padding:4px;">
+                            <span t-esc="line.price_subtotal"/>
+                        </td>
+                        <td style="text-align:right;padding:4px;">
+                            <span t-esc="line.discount"/>%
+                        </td>
+                        <td style="text-align:right;padding:4px;">
+                            <span t-esc="line.tax_ids.amount"/>%
+                        </td>
+                        <td style="text-align:right;width: 15%;padding:4px;">
+                            <span t-esc="line.price_unit"/>
+                        </td>
+                        <td style="text-align:right;padding:4px;">
+                            <span t-esc="line.product_id.uom_id.name"/>
+                        </td>
+                        <td style="text-align:right;padding:4px;">
+                            <span t-esc="line.quantity"/>
+                        </td>
+                        <td style="width: 35%;text-align:right;padding:4px;">
+                            <span t-esc="line.product_id.name"/>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width:100%;border-collapse: collapse;">
+                    <tr style="font-weight:bold;color:#fff; background-color:#434343; padding:2px ; text-align:right">
+                        <td colspan="3">
+                            الاجمالـــــى
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;width:60%; ">
+                            <span t-esc="doc.amount_untaxed"/>
+                        </td>
+                        <td style="text-align:right;width:25%;font-size:17px;padding:4px;">إجمالي المبلغ بدون ضريبة
+                            <br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;width:60%;">
+                            <span t-esc="doc.amount_tax"/>
+                        </td>
+                        <td style="text-align:right;width:25%;font-size:17px;padding:4px;">إجمالي ضريبة القيمة المضافة
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;width:60%;">
+                            <span t-esc="doc.amount_residual"/>
+                        </td>
+                        <td style="text-align:right;width:25%;font-size:17px;padding:4px;">إجمالي المبلغ المستحق
+                        </td>
+                        <br/>
+                        <br/>
+                    </tr>
+                </table>
+                <table style="width:100%;border-collapse: collapse;padding-top:20px">
+                    <tr style="width:70%; text-align:left">
+                        <td style="font-size:18px;letter-spacing:1px">
+                            <strong>
+                                VAT:
+                                <span>
+                                    <t t-esc="doc.company_id.vat"/>
+                                </span>
+                            </strong>
+                            <br/>
+                        </td>
+                    </tr>
+                    <tr style="width:70%; text-align:left">
+                        <td style="font-size:18px;letter-spacing:1px">
+                            <strong>
+                                Bank Name:
+                                <span>
+                                    <t t-esc="doc.company_id.vat"/>
+                                </span>
+                            </strong>
+                            <br/>
+                        </td>
+                    </tr>
+                    <tr style="width:70%; text-align:left">
+                        <td style="font-size:18px;letter-spacing:1px">
+                            <strong>
+                                IBAN:
+                                <span>
+                                    <t t-esc="doc.company_id.vat"/>
+                                </span>
+                            </strong>
+                            <br/>
+                            <br/>
+                        </td>
+                    </tr>
+                    <tr style="width:70%; text-align:left">
+                        <td>
+                            <strong style="margin-left:120px; font-size:18px; letter-spacing:1px">
+                                MADAEN ALKHALEJ EST
+                            </strong>
+                            <br/>
+                        </td>
+                    </tr>
+                </table>
+                <div style="width:30%; text-align:left;float:right;">
+                    <table>
+                        <tr>
+                            <td>
+                                <img t-attf-src="data:image/*;base64,{{doc.qr_code}}"
+                                     style="width:180px; height:180px"/>
+                            </td>
+                        </tr>
+                        <tr class="mb-3 text-left" style="padding-left:10px;padding-top:7px">
+                            <br/>
+                            <td>
+                                <b>Approved By:</b>
+                                <hr/>
+                            </td>
+                        </tr>
+                        <tr style="font-size: 15px;padding-left:10px !important" class="mb-3 text-left">
+                            <td>
+                            <b>ENG.
+                                <t t-esc="doc.company_id.approved_by"/>
+                            </b>
+                            </td>
+                        </tr>
+                        <tr style="font-size: 15px;padding-left:10px !important" class="mb-3 text-left">
+                            <td>
+                            <br/>
+                            <b>General Manager</b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>
